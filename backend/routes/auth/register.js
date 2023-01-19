@@ -1,42 +1,48 @@
-const User = require('./../../models/user');
-const config = require('./../../config/config');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const User = require("./../../models/user");
+const config = require("./../../config/config");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const register = async (req, res) => {
-    try {
-      const { userName, email, password } = req.body;
-  
-      const userCheck = await User.findOne({ userName: userName });
-      if (userCheck) {
-        return res.json({
-          isSuccess: false,
-          message:
-            "Kullanıcı adı daha önce kullanılmış. Lütfen başka bir kullanıcı adı ile tekrar kayıt olunuz",
-        });
-      }
-  
-      const mailVerify = await User.findOne({ email: email });
-      if (mailVerify) {
-        return res.json({
-          isSuccess: false,
-          message:
-            "Mail adresi daha önce kullanılmış. Lütfen başka bir mail adresi ile tekrar kayıt olunuz",
-        });
-      }
-  
-      const hashedPassword = await bcrypt.hash(password, 11);
-      const user = new User({ email, password: hashedPassword, userName });
-      await user.save();
-  
-      const token = jwt.sign({ userId: user._id }, config.secret, {
-        expiresIn: "1h",
-      });
-  
-      res.status(200).send({ token });
-    } catch (error) {
-      return res.status(422).send(error.message);
-    }
-  }
+  try {
+    const { userName, email, password } = req.body;
 
-  module.exports = { register}
+    const userCheck = await User.findOne({ userName: userName });
+    if (userCheck) {
+      return res.json({
+        isSuccess: false,
+        message:
+          "Kullanıcı adı daha önce kullanılmış. Lütfen başka bir kullanıcı adı ile tekrar kayıt olunuz",
+      });
+    }
+
+    const mailVerify = await User.findOne({ email: email });
+    if (mailVerify) {
+      return res.json({
+        isSuccess: false,
+        message:
+          "Mail adresi daha önce kullanılmış. Lütfen başka bir mail adresi ile tekrar kayıt olunuz",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 11);
+    const dbUser = new User({ email, password: hashedPassword, userName });
+    await dbUser.save();
+
+    const token = jwt.sign({ userId: dbUser._id }, config.secret, {
+      expiresIn: "1h",
+    });
+
+    const response = {
+      token,
+      userName: dbUser.userName,
+      email: dbUser.email,
+      guid: dbUser._id,
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    return res.status(422).send(error.message);
+  }
+};
+
+module.exports = { register };

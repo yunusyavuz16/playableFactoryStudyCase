@@ -23,9 +23,8 @@ const login = async (req, res) => {
     const token = jwt.sign({ userId: dbUser._id }, config.secret, {
       expiresIn: "1h",
     });
-
-    res.send({ token });
-    
+    const response = { token, userName: dbUser.userName, email: dbUser.email, guid: dbUser._id };
+    res.send(response);
   } catch (error) {
     return res.status(500).send(error.message);
   }
