@@ -1,14 +1,15 @@
 const jwt = require("jsonwebtoken");
 
-const checkJwt = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
-  try {
-    const decoded = jwt.verify(token, config.secret);
-    req.user = decoded;
+function checkJwt(req, res, next) {
+  const bearerHeader = req.headers["authorization"];
+  if (typeof bearerHeader !== "undefined") {
+    const bearer = bearerHeader.split(" ");
+    const bearerToken = bearer[1];
+    req.token = bearerToken;
     next();
-  } catch (error) {
-    return res.status(401).send({ error: "Unauthorized" });
+  } else {
+    res.sendStatus(403);
   }
-};
+}
 
 module.exports = { checkJwt };

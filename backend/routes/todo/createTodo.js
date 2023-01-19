@@ -7,11 +7,12 @@ const createToDo = (req, res) => {
     if (err) {
       res.sendStatus(403);
     } else {
-      const image = req.files.find((file) => file.fieldname === "image").path;
+      const image = req.files?.find((file) => file.fieldname === "image").path;
       const files = req.files
-        .filter((file) => file.fieldname === "files")
+        ?.filter((file) => file.fieldname === "files")
         .map((file) => file.path);
       const todo = new ToDo({
+        userGuid: req.body.userGuid,
         task: req.body.task,
         image,
         tags: req.body.tags,
