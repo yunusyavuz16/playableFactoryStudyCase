@@ -16,7 +16,7 @@ const checkJwt = (req, res, next) => {
     }
 };
 
-router.get('/profile', checkJwt, async (req, res) => {
+router.post('/profile', checkJwt, async (req, res) => {
     try {
         const user = await User.findById(req.user.userId);
         if (!user) {

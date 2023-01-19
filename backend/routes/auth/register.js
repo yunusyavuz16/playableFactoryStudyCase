@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 const register = async (req, res) => {
     try {
-      const { userName, email, password, name } = req.body;
+      const { userName, email, password } = req.body;
   
       const userCheck = await User.findOne({ userName: userName });
       if (userCheck) {
@@ -26,7 +26,7 @@ const register = async (req, res) => {
       }
   
       const hashedPassword = await bcrypt.hash(password, 11);
-      const user = new User({ email, password: hashedPassword, userName, name });
+      const user = new User({ email, password: hashedPassword, userName });
       await user.save();
   
       const token = jwt.sign({ userId: user._id }, config.secret, {
