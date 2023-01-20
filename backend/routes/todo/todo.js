@@ -1,5 +1,5 @@
 const express = require("express");
-const { checkJwt } = require("../../helpers/authHelper");
+const { getToken } = require("../../helpers/authHelper");
 const {
   upload,
   imageUpload,
@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post(
   "/create",
-  checkJwt,
+  getToken,
   fileUpload,
   imageUpload,
   createToDo
@@ -22,10 +22,10 @@ router.patch(
   "/update/:todoId",
   fileUpload,
   imageUpload,
-  checkJwt,
+  getToken,
   updateToDo
 );
 
-router.delete("/delete/:todoId", checkJwt, deleteToDo);
+router.delete("/delete/:todoId", getToken, deleteToDo);
 
 module.exports = router;

@@ -9,9 +9,9 @@ const updateToDo = (req, res) => {
       res.sendStatus(403);
     } else {
       const id = req.params.todoId;
-      const image = req.files.find((file) => file.fieldname === "image").path;
+      const image = req.files?.find((file) => file.fieldname === "image").path;
       const files = req.files
-        .filter((file) => file.fieldname === "files")
+        ?.filter((file) => file.fieldname === "files")
         .map((file) => file.path);
       ToDo.findOneAndUpdate(
         { _id: id },

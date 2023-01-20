@@ -1,12 +1,12 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
-const { checkJwt } = require("../helpers/authHelper");
+const { getToken } = require("../helpers/authHelper");
 const User = require("../models/user");
 
 const router = express.Router();
 
-router.post("/profile", checkJwt, async (req, res) => {
+router.post("/profile", getToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
     if (!user) {
