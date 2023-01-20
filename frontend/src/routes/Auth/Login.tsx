@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import clsx from "clsx";
 import { useFormik } from "formik";
 import { setAppUser } from "../../slices/appAuthSlice";
+import axios from "axios";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -22,6 +23,16 @@ const initialValues = {
   password: "",
 };
 
+const login = async (email: string, password: string) => {
+  try {
+    let resp = await axios.post("https://localhost:3333/api/auth/login", {
+      email,
+      password,
+    });
+    console.log("resp");
+  } catch (error) {}
+};
+
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -33,6 +44,7 @@ const Login = () => {
       setTimeout(async () => {
         const email = values.email;
         const password = values.password;
+        login(email, password);
       }, 1000);
     },
   });
