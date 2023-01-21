@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { AppUserModel } from "../models/models";
 
 interface AuthModel {
-  user: any | undefined;
+  user: AppUserModel | undefined;
   accessToken: string | undefined;
 }
 
@@ -16,7 +17,7 @@ const appAuthSlice = createSlice({
   reducers: {
     setAppUser(
       state: AuthModel,
-      action: { payload: { user: any | undefined } }
+      action: { payload: { user: AppUserModel | undefined } }
     ) {
       state.user = action.payload.user;
     },

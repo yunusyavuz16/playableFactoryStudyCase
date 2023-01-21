@@ -1,30 +1,25 @@
 import React, { useRef, useEffect, useState } from "react";
 import { shallowEqual, useSelector, connect, useDispatch } from "react-redux";
+import { GET_TOKEN_LOCAL_STORAGE } from "../../localStorage/localStorage";
 import { RootState } from "../../redux/rootReducer";
+import { setAppUser } from "../../slices/appAuthSlice";
+import { authInitHelper } from "./helpers/authInitHelper";
 
-
-
- const AuthInit = (props : any) => {
-
+const AuthInit = (props: any) => {
   const didRequest = useRef(false);
   const dispatch = useDispatch();
   const [showSplashScreen, setShowSplashScreen] = useState(true);
-  const accessToken = useSelector(
-    (state: RootState) => state.appAuth,
-    shallowEqual
-  );
+
+  const accessToken = GET_TOKEN_LOCAL_STORAGE();
 
   // We should request user by authToken before rendering the application
   useEffect(() => {
     const requestUser = async () => {
       try {
-        if (!didRequest.current) {
-        }
+        await authInitHelper(accessToken!, dispatch);
       } catch (error) {
         console.error(error);
-        if (!didRequest.current) {
-          dispatch(props.logout());
-        }
+        dispatch(setAppUser({ user: undefined }));
       } finally {
         setShowSplashScreen(false);
       }
@@ -35,7 +30,7 @@ import { RootState } from "../../redux/rootReducer";
     if (accessToken) {
       requestUser();
     } else {
-      dispatch(props.logout());
+      dispatch(setAppUser({ user: undefined }));
       setShowSplashScreen(false);
     }
   }, []);

@@ -1,28 +1,21 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import { RootState } from "../redux/rootReducer";
 import { AuthApp } from "./Auth/AuthApp";
 import { AuthPage } from "./Auth/Authpage";
-import Logout from "./Auth/Logout";
+import { AuthHelper } from "./Auth/helpers/authHelper";
 import { ErrorPage } from "./Errors/ErrorPage";
 import PrivateRoutes from "./PrivateRoutes/PrivateRoutes";
 
 const AppRoutes = () => {
-  const [isAuthorized, setIsAuthorized] = React.useState(false);
-  //const usr = AuthService.GetCurrentUser();
-
-  React.useEffect(() => {
-    // console.log(usr);
-    // if (usr && usr.token && usr.userData && usr.userData.sessionGuid) {
-    //   setIsAuthorized(true);
-    // }
-  }, []);
+  const isAuthorized = AuthHelper();
 
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<AuthApp />}>
           <Route path="error/*" element={<ErrorPage />} />
-          <Route path="logout" element={<Logout />} />
           {!isAuthorized ? (
             <>
               <Route path="auth/*" element={<AuthPage />} />

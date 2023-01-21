@@ -3,8 +3,12 @@ import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import clsx from "clsx";
 import { useFormik } from "formik";
-import { setAppUser } from "../../slices/appAuthSlice";
+import { setAppUser, setToken } from "../../slices/appAuthSlice";
 import axios from "axios";
+import { AnyAction, Dispatch } from "@reduxjs/toolkit";
+import { AppUserModel } from "../../models/models";
+import { SET_TOKEN_LOCAL_STORAGE } from "../../localStorage/localStorage";
+import { login } from "./helpers/loginHelper";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -23,16 +27,6 @@ const initialValues = {
   password: "",
 };
 
-const login = async (email: string, password: string) => {
-  try {
-    let resp = await axios.post("https://localhost:3333/api/auth/login", {
-      email,
-      password,
-    });
-    console.log("resp");
-  } catch (error) {}
-};
-
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -44,7 +38,13 @@ const Login = () => {
       setTimeout(async () => {
         const email = values.email;
         const password = values.password;
-        login(email, password);
+        let resp = await login(email, password, dispatch);
+        if (!resp.error) {
+        } else {
+          setStatus(resp.errorMessage);
+        }
+        setLoading(false);
+        setSubmitting(false);
       }, 1000);
     },
   });

@@ -1,0 +1,11 @@
+.containerHeight {
+    min-height: calc(100vh - 40px );
+}
+
+.innerContainerHeight {
+    min-height: calc(100vh - 140px );
+}
+
+.customBgColor {
+    background-color: #c8dfff
+}

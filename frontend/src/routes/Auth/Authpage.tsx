@@ -14,7 +14,7 @@ export function AuthPage() {
   }, []);
 
   return (
-    <div style={{ height: "100vh", background: "#c8dfff" }}>
+    <div style={{ background: "#c8dfff" }} className="containerHeight">
       <PageHeader />
       <LocaleLoginComponent />
       <PageFooter />
@@ -24,7 +24,7 @@ export function AuthPage() {
 
 const LocaleLoginComponent = () => {
   return (
-    <div className="d-flex flex-wrap justify-content-center align-items-center border-none border-radius radius-10 rounded h-75 ">
+    <div className="d-flex flex-wrap justify-content-center align-items-center border-none border-radius radius-10 rounded innerContainerHeight ">
       <div
         className="mx-auto p-5 card rounded-3 shadow w-75"
         style={{ maxWidth: 475 }}
