@@ -1,11 +1,11 @@
 const cookieParser = require("cookie-parser");
-const authRoutes = require('./routes/auth/auth');
-const protectedRoutes = require('./routes/protected');
-const toDo = require('./routes/todo/todo');
+const authRoutes = require("./routes/auth/auth");
+const protectedRoutes = require("./routes/protected");
+const toDo = require("./routes/todo/todo");
 const createError = require("http-errors");
 const bodyParser = require("body-parser");
 const express = require("express");
-const db = require("./config/db")
+const db = require("./config/db");
 const logger = require("morgan");
 const cors = require("cors");
 const path = require("path");
@@ -25,10 +25,9 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "public")));
 
-
-app.use('/api/auth', authRoutes);
-app.use('/api/protected', protectedRoutes);
-app.use('/todo', toDo);
+app.use("/api/auth", authRoutes);
+app.use("/api/protected", protectedRoutes);
+app.use("/todo", toDo);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

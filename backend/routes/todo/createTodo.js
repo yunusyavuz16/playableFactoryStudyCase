@@ -12,7 +12,7 @@ const createToDo = (req, res) => {
         ?.filter((file) => file.fieldname === "files")
         .map((file) => file.path);
       const todo = new ToDo({
-        userGuid: req.body.userGuid,
+        userGuid: authData.userId,
         task: req.body.task,
         image,
         tags: req.body.tags,
